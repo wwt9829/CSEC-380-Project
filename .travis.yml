@@ -3,6 +3,12 @@ language: python
 services:
   - docker
 
+install:
+  - pip install -r requirements.txt
+
 before_install:
   - docker build -t my-apache2 .
   - docker run -dit --name my-running-app -p 8080:80 my-apache2
+
+script:
+  - pytest
