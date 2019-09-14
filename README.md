@@ -11,4 +11,4 @@ A vulnerable video sharing platform for RIT's Principles of Web Application Secu
 
 *The landing page of ChaimTube:*
 
-<img src="https://github.com/wwt9829/CSEC-380-Project/blob/master/Homepage.png" alt="ChaimTube homepage" width="500"/>
+<img src="https://raw.githubusercontent.com/wwt9829/CSEC-380-Project/master/documentation/homepage.png" alt="ChaimTube homepage" width="500"/>
