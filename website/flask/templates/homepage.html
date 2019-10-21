@@ -1,0 +1,84 @@
+<link rel="stylesheet" href="/static/style.css" type="text/css">
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<style>
+table, th, td {
+  border: 0px;
+  }
+</style>
+
+<title>ChaimTube Video System</title>
+<h1>Welcome to ChaimTube Video System {{ username }}</h1>
+<button><a href="/logout" style="float: right;">LOGOUT</a></button>
+    <form method=post enctype=multipart/form-data>
+	    <p>Upload from Computer or Upload from Link</p>
+	    Upload from Computer:  <input type=file name=file><br>
+	    Upload from Link:      <input type="text" name="linkupload"><br>
+	    <input type=submit value=Upload>
+
+<div id="videos"></div>
+<div id="othervids"></div>
+
+</head>
+
+	
+<body>
+
+<script type=text/javascript>
+$(document).ready(function(){
+    var html = '<ul>';
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:5000/getvideos",
+	contentType: "application/json",
+        dataType: 'json',
+	data: JSON.stringify({username: "{{ username }}"}),
+        success: function(data) {
+		console.log(data);
+		for (i=0; i<data.length; i++) {
+			console.log(data[i]);
+		
+			html += '<li><a href="/videos/'+data[i]['VideoTitle']+'">' + data[i]['VideoTitle'] + '</a><a href="/delete/'+data[i]['VideoID']+'"><img alt="Delete this video?" src="/static/images/delete.png" width="24" height="24"></a></li>'
+		}
+		html += '</ul>'
+		$("#videos").append(html);
+		
+        },
+        error: function(error){
+            console.log("Here is the error res: " + JSON.stringify(error));
+        }
+    });
+});
+</script>
+<script type=text/javascript>
+$(document).ready(function(){
+    var html = '<wl>Check out some great videos from our other users!<wl><br>';
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:5000/getothervids",
+        contentType: "application/json",
+        dataType: 'json',
+        data: JSON.stringify({username: "{{ username }}"}),
+        success: function(data) {
+                console.log(data);
+                for (i=0; i<data.length; i++) {
+                        console.log(data[i]);
+
+			html += '<a href="/videos/'+data[i]['VideoTitle']+'">' + data[i]['VideoTitle'] + ' by ' + data[i]['VideoUser'] + '</a><br>'
+			//html += '<video width="320" height="240" controls><source src="/videos/'+data[i]['VideoTitle']+'" type="video/mp4"></video><br>'
+                }
+                html += '</wl>'
+                $("#othervids").append(html);
+
+        },
+        error: function(error){
+            console.log("Here is the error res: " + JSON.stringify(error));
+        }
+    });
+});
+</script>
+</body>
+</html>
