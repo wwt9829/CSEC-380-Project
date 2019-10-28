@@ -1,31 +1,44 @@
-<link rel="stylesheet" href="/static/style.css" type="text/css">
+
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="/static/style.css" type="text/css">
 <meta charset="utf-8">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<title>ChaimTube</title>
+
 <style>
 table, th, td {
-  border: 0px;
+    border: 0px; 
   }
 </style>
-
-<title>ChaimTube Video System</title>
-<h1>Welcome to ChaimTube Video System {{ username }}</h1>
-<button><a href="/logout" style="float: right;">LOGOUT</a></button>
-    <form method=post enctype=multipart/form-data>
-	    <p>Upload from Computer or Upload from Link</p>
-	    Upload from Computer:  <input type=file name=file><br>
-	    Upload from Link:      <input type="text" name="linkupload"><br>
-	    <input type=submit value=Upload>
-
-<div id="videos"></div>
-<div id="othervids"></div>
-
 </head>
 
-	
+
 <body>
+    <div class="home">
+        <div class="home-title">
+            <h1>{{ username }}'s ChaimTube</h1>
+            <button><a href="/logout" style="float: right;">LOGOUT</a></button>
+        </div>
+    
+        <h3>Add your video!</h3>
+        <form method=post enctype=multipart/form-data>
+            <div class="upload">
+            Upload from Computer:  <input type=file name=file><br>
+            Upload from Link:      <input type="text" name="linkupload"><br>
+            <input type="submit" value="Upload" class="btn btn-primary btn-large btn-block">
+            </div>
+        </form>
+    </div>
+
+    <div id="videos"></div>
+    <div id="othervids"></div>
+
+
+
+	
+
 
 <script type=text/javascript>
 $(document).ready(function(){

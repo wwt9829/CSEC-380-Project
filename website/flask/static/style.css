@@ -5,15 +5,18 @@ box-sizing: border-box;
 *:focus {
 outline: none;
 }
+
 body {
-font-family: Verdana;
+    font-family: Arial, Helvetica, sans-serif;
 background-color: #FF904C;
 padding: 50px;
 }
+
 .login {
 margin: 20px auto;
 width: 300px;
 }
+
 .login-screen {
 background-color: #FFF;
 padding: 20px;
@@ -28,9 +31,27 @@ color: #777;
 .login-form {
 text-align: center;
 }
+
 .control-group {
 margin-bottom: 10px;
 }
+
+.home-title {
+    color:#DB7F34;
+    text-align: center;
+}
+
+.home {
+    background-color: white;
+    padding: 30px;
+    border-radius: 5px;
+}
+
+.upload input{ 
+    margin-bottom: 5px;
+}
+
+
  
 input {
 text-align: center;
