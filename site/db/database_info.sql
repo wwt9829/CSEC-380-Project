@@ -1,0 +1,11 @@
+CREATE DATABASE project;
+USE project;
+
+CREATE TABLE users(
+	UserID INTEGER NOT NULL AUTO_INCREMENT,
+	Username VARCHAR(16) NOT NULL,
+	EncryptedPass VARCHAR(16) NOT NULL,
+	TotalVideoCount INTEGER,
+	DateCreated DATE,
+	CONSTRAINT users_pk PRIMARY KEY(UserID)
+);

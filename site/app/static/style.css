@@ -1,0 +1,99 @@
+* {
+box-sizing: border-box;
+}
+ 
+*:focus {
+outline: none;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+background-color: #FF904C;
+padding: 50px;
+}
+
+.login {
+margin: 20px auto;
+width: 300px;
+}
+
+.login-screen {
+background-color: #FFF;
+padding: 20px;
+border-radius: 5px
+}
+ 
+.app-title {
+text-align: center;
+color: #777;
+}
+ 
+.login-form {
+text-align: center;
+}
+
+.control-group {
+margin-bottom: 10px;
+}
+
+.home-title {
+    color:#DB7F34;
+    text-align: center;
+}
+
+.home {
+    background-color: white;
+    padding: 30px;
+    border-radius: 5px;
+}
+
+.upload input{ 
+    margin-bottom: 5px;
+}
+
+
+ 
+input {
+text-align: center;
+background-color: #F0EEEB;
+border: 2px solid transparent;
+border-radius: 3px;
+font-size: 16px;
+font-weight: 200;
+padding: 0px 0;
+width: 250px;
+transition: border .5s;
+}
+ 
+input:focus {
+border: 2px solid #DB7F34;
+box-shadow: none;
+}
+ 
+.btn {
+border: 2px solid transparent;
+background: #FF904C;
+color: #ffffff;
+font-size: 16px;
+line-height: 25px;
+padding: 10px 0;
+text-decoration: none;
+text-shadow: none;
+border-radius: 3px;
+box-shadow: none;
+transition: 0.25s;
+display: block;
+width: 250px;
+margin: 0 auto;
+}
+ 
+.btn:hover {
+background-color: #2980B9;
+}
+ 
+.login-link {
+font-size: 12px;
+color: #444;
+display: block;
+margin-top: 12px;
+}

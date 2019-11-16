@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/static/style.css" type="text/css">
+<meta charset="utf-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<title>ChaimTube</title>
+
+<style>
+table, th, td {
+    border: 0px; 
+  }
+</style>
+</head>
+
+
+<body>
+    <div class="home">
+        <div class="home-title">
+            <h1>{{ username }}'s ChaimTube</h1>
+            <button><a href="/logout" style="float: right;">LOGOUT</a></button>
+        </div>
+    
+        <h3>Add your video!</h3>
+        <form method=post enctype=multipart/form-data>
+            <div class="upload">
+            Upload from Computer:  <input type=file name=file><br>
+            Upload from Link:      <input type="text" name="linkupload"><br>
+            <input type="submit" value="Upload" class="btn btn-primary btn-large btn-block">
+            </div>
+        </form>
+    </div>
+
+    <div id="videos"></div>
+    <div id="othervids"></div>
+
+
+
+	
+
+
+<script type=text/javascript>
+$(document).ready(function(){
+    var html = '<ul>';
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:5000/getvideos",
+	contentType: "application/json",
+        dataType: 'json',
+	data: JSON.stringify({username: "{{ username }}"}),
+        success: function(data) {
+		console.log(data);
+		for (i=0; i<data.length; i++) {
+			console.log(data[i]);
+		
+			html += '<li><a href="/videos/'+data[i]['VideoTitle']+'">' + data[i]['VideoTitle'] + '</a><a href="/delete/'+data[i]['VideoID']+'"><img alt="Delete this video?" src="/static/images/delete.png" width="24" height="24"></a></li>'
+		}
+		html += '</ul>'
+		$("#videos").append(html);
+		
+        },
+        error: function(error){
+            console.log("Here is the error res: " + JSON.stringify(error));
+        }
+    });
+});
+</script>
+<script type=text/javascript>
+$(document).ready(function(){
+    var html = '<wl>Check out some great videos from our other users!<wl><br>';
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:5000/getothervids",
+        contentType: "application/json",
+        dataType: 'json',
+        data: JSON.stringify({username: "{{ username }}"}),
+        success: function(data) {
+                console.log(data);
+                for (i=0; i<data.length; i++) {
+                        console.log(data[i]);
+
+			html += '<a href="/videos/'+data[i]['VideoTitle']+'">' + data[i]['VideoTitle'] + ' by ' + data[i]['VideoUser'] + '</a><br>'
+			//html += '<video width="320" height="240" controls><source src="/videos/'+data[i]['VideoTitle']+'" type="video/mp4"></video><br>'
+                }
+                html += '</wl>'
+                $("#othervids").append(html);
+
+        },
+        error: function(error){
+            console.log("Here is the error res: " + JSON.stringify(error));
+        }
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  db:
+    container_name: chaimtube_db
+    build: db/.
+    env_file:
+      - db/db.env
+  
+  app:
+    container_name: chaimtube_app
+    build: app/.
+    ports:
+      - 5000:5000
+
+  # server:
+  #   container_name: chaimtube_server
+  #   build: server/.
+  #   ports:
+  #     - 80:80
+
+networks:
+  project:
