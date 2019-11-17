@@ -1,3 +1,3 @@
-FROM mysql:latest
+FROM mariadb:latest
 
-COPY database_info.sql /docker-entrypoint-initdb.d/project.sql
+COPY database.sql docker-entrypoint-initdb.d/

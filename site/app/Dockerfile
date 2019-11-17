@@ -1,10 +1,6 @@
-FROM python:3.6
+FROM python:latest
 
-WORKDIR /flask
-
-COPY requirements.txt /flask
+COPY /flask .
 RUN pip install -r requirements.txt
 
-COPY app.py /flask
-COPY . /flask
-CMD python app.py
+CMD python chaimtube.py
