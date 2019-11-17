@@ -1,4 +1,5 @@
 from flask import *
+import hashlib
 import pymysql
 import os
 
@@ -24,9 +25,14 @@ def login():
     username = request.form['username'] 
     password = request.form['password']
     
+    cursor.execute("SELECT Salt from Account WHERE Username='"+str(username)+"'")
+    salt = cursor.fetchone()
+    calculated_hash = hashlib.sha256((salt[0] + password).encode()).hexdigest()
+    #return "Calculated hash: " + calculated_hash
     cursor.execute("SELECT PasswordHash FROM Account WHERE Username='"+str(username)+"'")
     password_hash = cursor.fetchone()[0]
-    if password_hash == password:
+    
+    if password_hash == calculated_hash:
         session['Username'] = username
         return redirect(url_for('home'))
     else:
