@@ -1,0 +1,4 @@
+flask
+flask-login
+pymysql
+cryptography
