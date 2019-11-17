@@ -25,22 +25,34 @@ def login():
     username = request.form['username'] 
     password = request.form['password']
     
-    cursor.execute("SELECT Salt from Account WHERE Username='"+str(username)+"'")
+    sql_statement = "SELECT Salt from Account WHERE Username=%s"    # SQL Injection (classic) protection
+    cursor.execute(sql_statement, str(username))
     salt = cursor.fetchone()
-    calculated_hash = hashlib.sha256((salt[0] + password).encode()).hexdigest()
-    #return "Calculated hash: " + calculated_hash
-    cursor.execute("SELECT PasswordHash FROM Account WHERE Username='"+str(username)+"'")
+
+    if salt is None:
+        return render_template('incorrect.html')
+    else:
+        salt = salt[0]
+
+    calculated_hash = hashlib.sha256((salt + password).encode()).hexdigest()
+
+    sql_statement = "SELECT PasswordHash FROM Account WHERE Username=%s"
+    cursor.execute(sql_statement, str(username))
     password_hash = cursor.fetchone()[0]
     
     if password_hash == calculated_hash:
-        session['Username'] = username
+        sql_statement = "SELECT DisplayName from Account WHERE Username=%s"
+        cursor.execute(sql_statement, str(username))
+        display_name = cursor.fetchone()[0]
+
+        session['Username'] = display_name
         return redirect(url_for('home'))
     else:
         return render_template('incorrect.html')
 
 @app.route("/home")
 def home():
-    return render_template("home.html")
+    return render_template("home.html", username = session['Username'])
 
 @app.route("/incorrect")
 def incorrect():
