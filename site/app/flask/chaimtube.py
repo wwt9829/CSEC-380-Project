@@ -1,7 +1,9 @@
-from flask import Flask, flash, redirect, render_template, request, session, abort
+from flask import *
 import pymysql
+import os
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.urandom(128) # CSRF protection
 
 check = 1
 while check == 1:
@@ -9,7 +11,6 @@ while check == 1:
         check = 0
         db = pymysql.connect('chaimtube_db', 'root', 'changeme', 'chaimtube')
     except pymysql.err.OperationalError:
-        #print("Database not yet ready. Retrying...")
         check = 1
 
 cursor = db.cursor()
@@ -23,21 +24,26 @@ def login():
     username = request.form['username'] 
     password = request.form['password']
     
-    cursor.execute("SELECT user_id FROM Account WHERE Username="+"'"+str(username)+"'")
-    id = cursor.fetchone()
-    return "Logging in user " + id + "."
+    cursor.execute("SELECT PasswordHash FROM Account WHERE Username='"+str(username)+"'")
+    password_hash = cursor.fetchone()[0]
+    if password_hash == password:
+        session['Username'] = username
+        return redirect(url_for('home'))
+    else:
+        return render_template('incorrect.html')
 
 @app.route("/home")
 def home():
     return render_template("home.html")
 
-@app.route("/wrongpass")
-def wrongpass():
-    return render_template("wrongpass.html")
+@app.route("/incorrect")
+def incorrect():
+    return render_template("incorrect.html")
 
-@app.route("/wronguser")
-def wronguser():
-    return render_template("wronguser.html")
+@app.route("/logout", methods=["GET"])
+def logout():
+    session.pop('Username', None)
+    return redirect(url_for('landing'))
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
