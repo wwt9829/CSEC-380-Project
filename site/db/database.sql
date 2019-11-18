@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS `Video` (
       `video_id` int(11) NOT NULL AUTO_INCREMENT,
       `user_id` int(11) NOT NULL,
       `FileName` varchar(32) NOT NULL,
-      `VideoURL` varchar(256) NOT NULL
+      `VideoURL` varchar(256) NOT NULL,
+      PRIMARY KEY (`video_id`)
     );
 
 INSERT INTO `Account` (`user_id`, `Username`, `DisplayName`, `Salt`, `PasswordHash`) VALUES
