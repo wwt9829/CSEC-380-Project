@@ -1,7 +1,10 @@
+import filetype
 from flask import *
 import hashlib
 import pymysql
 import os
+import requests
+import sys          # disable if only used for printing
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(128) # CSRF protection
@@ -50,9 +53,66 @@ def login():
     else:
         return render_template('incorrect.html')
 
-@app.route("/home")
+@app.route("/home", methods=["GET", "POST"])
 def home():
-    return render_template("home.html", username = session['Username'])
+    # Upload by link
+    link = request.form.get('linkupload', None)
+
+    if link != "" and link is not None:
+        try:
+            video = requests.get(link.strip(), stream=True).content
+            kind = filetype.guess(video).extension
+
+            if kind != "mp4":
+                return "Valid .mp4 file not found at " + link
+            
+            # Video metadata
+            sql_statement = "SELECT user_id FROM Account WHERE Username=%s"
+            user = session['Username']
+            cursor.execute(sql_statement, user)
+            user_id = cursor.fetchone()[0]
+
+            video_name = link.split('/')[-1]
+            location = "video/" + name
+
+            # Store video at location
+            with open(location) as code:
+                code.write(video, "wb")
+            
+            # Store metadata in database
+            cursor.execute("INSERT INTO Video(user_id, FileName, VideoLocation) VALUES ('{}', '{}', '{}')".format(user_id, video_name, location))
+
+        except requests.exceptions.MissingSchema:
+            return "Invalid URL"
+        except TypeError:
+            return "Valid .mp4 file not found at " + link
+        
+        return render_template("home.html", username = session['Username'])
+
+    # Upload by file
+    elif request.files.getlist("file") is not None:
+        for video in request.files.getlist("file"):
+            
+            # Video metadata
+            sql_statement = "SELECT user_id FROM Account WHERE Username=%s"
+            user = session['Username']
+            cursor.execute(sql_statement, user)
+            user_id = cursor.fetchone()[0]
+
+            video_name = video.filename
+            location = "video/" + video_name
+
+            # Store video at location
+            video.save("video/" + video_name)
+
+            # Store metadata in database
+            cursor.execute("INSERT INTO Video(user_id, FileName, VideoLocation) VALUES ('{}', '{}', '{}')".format(user_id, video_name, location))
+
+        return render_template("home.html", username = session['Username'])
+
+    else:
+        print("Someone did nothing", file=sys.stderr)                           # remove
+        return render_template("home.html", username = session['Username'])
 
 @app.route("/incorrect")
 def incorrect():

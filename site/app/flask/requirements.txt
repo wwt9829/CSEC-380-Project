@@ -1,4 +1,6 @@
+cryptography
+filetype
 flask
 flask-login
 pymysql
-cryptography
+requests
