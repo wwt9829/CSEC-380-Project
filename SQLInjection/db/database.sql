@@ -9,11 +9,14 @@ CREATE TABLE IF NOT EXISTS `Account` (
       PRIMARY KEY (`user_id`)
     );
 
-CREATE TABLE IF NOT EXISTS `Video` (
+DROP TABLE IF EXISTS `Video`;
+
+CREATE TABLE `Video` (
       `video_id` int(11) NOT NULL AUTO_INCREMENT,
       `user_id` int(11) NOT NULL,
       `FileName` varchar(32) NOT NULL,
-      `VideoURL` varchar(256) NOT NULL
+      `VideoURL` varchar(256) NOT NULL,
+      PRIMARY KEY (`video_id`)
     );
 
 INSERT INTO `Account` (`user_id`, `Username`, `DisplayName`, `Salt`, `PasswordHash`) VALUES
