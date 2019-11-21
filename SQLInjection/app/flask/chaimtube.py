@@ -32,7 +32,7 @@ def login():
     salt = cursor.fetchone()
 
     if salt is None:
-        return render_template('incorrect.html')
+        return render_template('incorrectuser.html')
     else:
         salt = salt[0]
 
@@ -54,7 +54,7 @@ def login():
         session['Username'] = display_name
         return redirect(url_for('home'))
     else:
-        return render_template('incorrect.html')
+        return render_template('incorrectpassword.html')
 
 @app.route("/home")
 def home():
@@ -63,6 +63,15 @@ def home():
 @app.route("/incorrect")
 def incorrect():
     return render_template("incorrect.html")
+
+@app.route("/incorrectuser")
+def incorrect():
+    return render_template("incorrectuser.html")
+
+
+@app.route("/incorrectpassword")
+def incorrect():
+    return render_template("incorrectpassword.html")
 
 @app.route("/logout", methods=["GET"])
 def logout():
