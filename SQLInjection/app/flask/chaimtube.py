@@ -25,8 +25,10 @@ def login():
     username = request.form['username'] 
     password = request.form['password']
     
-    sql_statement = "SELECT Salt from Account WHERE Username=%s"    # SQL Injection (classic) protection
-    cursor.execute(sql_statement, str(username))
+    #sql_statement = "SELECT Salt from Account WHERE Username=%s"    # SQL Injection (classic) protection
+    #ursor.execute(sql_statement, str(username))
+
+    cursor.execute("SELECT Salt from Account WHERE Username="+"'"+str(username)+"'")
     salt = cursor.fetchone()
 
     if salt is None:
@@ -34,15 +36,19 @@ def login():
     else:
         salt = salt[0]
 
+
+
     calculated_hash = hashlib.sha256((salt + password).encode()).hexdigest()
 
-    sql_statement = "SELECT PasswordHash FROM Account WHERE Username=%s"
-    cursor.execute(sql_statement, str(username))
+    #sql_statement = "SELECT PasswordHash FROM Account WHERE Username=%s"
+    #cursor.execute(sql_statement, str(username))
+    cursor.execute("SELECT PasswordHash FROM Account WHERE Username="+"'"+str(username)+"'")
     password_hash = cursor.fetchone()[0]
     
     if password_hash == calculated_hash:
-        sql_statement = "SELECT DisplayName from Account WHERE Username=%s"
-        cursor.execute(sql_statement, str(username))
+        #sql_statement = "SELECT DisplayName from Account WHERE Username=%s"
+        #cursor.execute(sql_statement, str(username))
+        cursor.execute("SELECT DisplayName from Account WHERE Username="+"'"+str(username)+"'")
         display_name = cursor.fetchone()[0]
 
         session['Username'] = display_name
