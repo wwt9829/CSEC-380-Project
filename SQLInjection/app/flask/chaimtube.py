@@ -27,7 +27,7 @@ def login():
     
     #sql_statement = "SELECT Salt from Account WHERE Username=%s"    # SQL Injection (classic) protection
     #ursor.execute(sql_statement, str(username))
-
+    """
     cursor.execute("SELECT Salt from Account WHERE Username="+"'"+str(username)+"'")
     salt = cursor.fetchone()
 
@@ -35,10 +35,11 @@ def login():
         return render_template('incorrect.html')
     else:
         salt = salt[0]
+    """
 
 
-
-    calculated_hash = hashlib.sha256((salt + password).encode()).hexdigest()
+    calculated_hash = hashlib.sha256(password.encode()).hexdigest()
+    print(calculated_hash)
 
     #sql_statement = "SELECT PasswordHash FROM Account WHERE Username=%s"
     #cursor.execute(sql_statement, str(username))
