@@ -1,5 +1,7 @@
 import filetype
 from flask import *
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import hashlib
 import pymysql
 import os
@@ -10,6 +12,12 @@ import sys                                                                      
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(128)                                              # CSRF protection
+
+limiter = Limiter(                                                                      # Brute force protection
+    app,
+    key_func=get_remote_address,
+    default_limits=["2 per minute", "1 per second"],
+)
 
 def db_connect():    
     check = 1
@@ -30,6 +38,7 @@ def landing():
     return render_template("login.html")
 
 @app.route("/login", methods=["POST"])
+@limiter.limit("2 per minute", error_message="You have tried to log in too many times. Please wait a moment and try again.")        # Brute force protection
 def login():
     cursor, db = db_connect()
     

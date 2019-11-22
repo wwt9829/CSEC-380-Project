@@ -1,6 +1,7 @@
 cryptography
 filetype
 flask
+Flask-Limiter
 flask-login
 pymysql
 requests
