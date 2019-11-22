@@ -7,7 +7,7 @@ install:
   - pip install -r tests/requirements.txt
 
 before_install:
-  - docker-compose -f site/docker-compose.yml up --build
+  - docker-compose -f site/docker-compose.yml up --build -d
 
 script:
   - pytest
