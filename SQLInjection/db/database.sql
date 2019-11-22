@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS `Account` (
       `user_id` int(11) NOT NULL AUTO_INCREMENT,
       `Username` varchar(32) NOT NULL,
       `DisplayName` varchar(32) NOT NULL,
-
       `PasswordHash` varchar(256) NOT NULL,
       PRIMARY KEY (`user_id`)
     );
