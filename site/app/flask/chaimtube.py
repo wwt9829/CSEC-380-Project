@@ -25,7 +25,7 @@ def db_connect():
 
 # LOGIN
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 def landing():
     return render_template("login.html")
 
@@ -70,7 +70,7 @@ def login():
         db.close()
         return render_template('incorrect.html')
 
-@app.route("/incorrect")
+@app.route("/incorrect", methods=["GET"])
 def incorrect():
     return render_template("incorrect.html")
 
@@ -189,6 +189,35 @@ def other_videos():
     cursor.close()
     db.close()
     return jsonify(json_data)
+
+@app.route("/delete/<video_id>", methods=["GET"])
+def delete_video(video_id):
+    cursor, db = db_connect()
+
+    sql_statement = "SELECT user_id FROM Video WHERE video_id=%s;"                       # SQL Injection protection
+    cursor.execute(sql_statement, str(video_id))
+    video_owner = cursor.fetchone()[0]
+
+    user_id = session['user_id']
+
+    if user_id == video_owner:
+        sql_statement = "SELECT FileName FROM Video WHERE video_id=%s;"                  # SQL Injection protection
+        cursor.execute(sql_statement, str(video_id))
+        video_name = cursor.fetchone()[0]
+
+        try:
+            os.remove("video/" + video_name)
+        except Exception as e:
+            print(e, file=sys.stderr)
+
+        sql_statement = "DELETE FROM Video WHERE video_id=%s;"                           # SQL Injection protection
+        cursor.execute(sql_statement, str(video_id))
+    else:
+        return "Error: Video owned by different user. Cannot be deleted."
+
+    cursor.close()
+    db.close()
+    return redirect(url_for('home'))
 
 @app.route('/video/<title>', methods=["GET"])
 def get_video(title):
