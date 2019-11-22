@@ -13,7 +13,6 @@ CREATE TABLE IF NOT EXISTS `Video` (
       `video_id` int(11) NOT NULL AUTO_INCREMENT,
       `user_id` int(11) NOT NULL,
       `FileName` varchar(32) NOT NULL,
-      `VideoLocation` varchar(256) NOT NULL,
       PRIMARY KEY (`video_id`)
     );
 
