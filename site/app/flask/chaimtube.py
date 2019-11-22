@@ -104,6 +104,7 @@ def home():
             
             # Video metadata
             user_id = session['user_id']
+            username = session['display_name']
             video_name = link.split('/')[-1]
             location = "video/" + video_name
 
@@ -112,8 +113,8 @@ def home():
                 code.write(video)
             
             # Store metadata in database
-            sql_statement = "INSERT INTO Video(user_id, FileName) VALUES (%s, %s);"      # SQL Injection protection
-            insert = (str(user_id), str(video_name))
+            sql_statement = "INSERT INTO Video(user_id, Username, FileName) VALUES (%s, %s, %s);"      # SQL Injection protection
+            insert = (str(user_id), str(username), str(video_name))
             cursor.execute(sql_statement, insert)
 
         except requests.exceptions.MissingSchema:
@@ -131,14 +132,15 @@ def home():
             
             # Video metadata
             user_id = session['user_id']
+            username = session['display_name']
             video_name = video.filename
 
             # Store video at location
             video.save("video/" + video_name)
 
             # Store metadata in database
-            sql_statement = "INSERT INTO Video(user_id, FileName) VALUES (%s, %s);"      # SQL Injection protection
-            insert = (str(user_id), str(video_name))
+            sql_statement = "INSERT INTO Video(user_id, Username, FileName) VALUES (%s, %s, %s);"      # SQL Injection protection
+            insert = (str(user_id), str(username), str(video_name))
             cursor.execute(sql_statement, insert)
 
         cursor.close()

@@ -80,7 +80,7 @@ $(document).ready(function(){
                 for (i=0; i<data.length; i++) {
                         console.log(data[i]);
 
-                        html += '<li><a href="/video/'+data[i]['FileName']+'">' + data[i]['FileName'] + '</a><a href="/delete/'+data[i]['video_id']+'"><img alt="Delete this video?" src="/static/images/delete.png" width="24" height="24"></a></li>'
+                        html += '<li><a href="/video/'+data[i]['FileName']+'">' + data[i]['FileName'] + ' by ' + data[i]['Username'] + '</a><br>'
 			//html += '<video width="320" height="240" controls><source src="/videos/'+data[i]['VideoTitle']+'" type="video/mp4"></video><br>'
                 }
                 html += '</wl>'

@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `Account` (
 CREATE TABLE IF NOT EXISTS `Video` (
       `video_id` int(11) NOT NULL AUTO_INCREMENT,
       `user_id` int(11) NOT NULL,
+      `Username` varchar(32) NOT NULL,
       `FileName` varchar(32) NOT NULL,
       PRIMARY KEY (`video_id`)
     );
