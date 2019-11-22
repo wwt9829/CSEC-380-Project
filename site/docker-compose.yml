@@ -8,6 +8,7 @@ services:
       - db/db.env
     networks:
       - project
+    restart: always
   
   app:
     container_name: chaimtube_app
@@ -18,6 +19,7 @@ services:
       - 5000:5000
     networks:
       - project
+    restart: always
 
 networks:
   project:
