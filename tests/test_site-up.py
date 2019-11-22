@@ -8,10 +8,10 @@ def get_page(url):
 
 
 def test_get_page():
-        r = get_page("http://localhost/").content
-        parsed_html = BeautifulSoup(r, "html.parser")
-        body = parsed_html.body
-        assert "Hello World" in str(body)
+        r = get_page("http://localhost:5000/").content
+        soup = BeautifulSoup(r, "html.parser")
+        text=soup.find_all(text=True)
+        assert "ChaimTube" in text
 
 
 if __name__ == '__main__':
