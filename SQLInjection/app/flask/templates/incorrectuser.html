@@ -3,5 +3,10 @@
 <head>
   <title>USERNAME DOES NOT EXIST!</title>
 </head>
-  <body>No record of this user</body>
+  <body>
+    No record of this user
+    {% if error %}
+      <p> {{ error }}
+    {% endif %}  
+  </body>
 </html>

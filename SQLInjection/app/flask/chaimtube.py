@@ -27,18 +27,19 @@ def login():
     
     #sql_statement = "SELECT Salt from Account WHERE Username=%s"    # SQL Injection (classic) protection
     #ursor.execute(sql_statement, str(username))
-    """
-    cursor.execute("SELECT Salt from Account WHERE Username="+"'"+str(username)+"'")
+    
+    cursor.execute("SELECT Username, PasswordHash from Account WHERE Username="+"'"+str(username)+"'")
     salt = cursor.fetchone()
 
     if salt is None:
-        return render_template('incorrectuser.html')
+        error = str(username)
+        return render_template('incorrectuser.html', error=error)
     else:
         salt = salt[0]
-    """
+    
 
 
-    calculated_hash = hashlib.sha256(password.encode()).hexdigest()
+    calculated_hash = hashlib.sha256((salt + password).encode()).hexdigest()
     print(calculated_hash)
 
     #sql_statement = "SELECT PasswordHash FROM Account WHERE Username=%s"
@@ -60,18 +61,18 @@ def login():
 @app.route("/home")
 def home():
     return render_template("home.html", username = session['Username'])
-
+'''
 @app.route("/incorrect")
 def incorrect():
     return render_template("incorrect.html")
-
+'''
 @app.route("/incorrectuser")
-def incorrect():
+def incorrectuser():
     return render_template("incorrectuser.html")
 
 
 @app.route("/incorrectpassword")
-def incorrect():
+def incorrectpassword():
     return render_template("incorrectpassword.html")
 
 @app.route("/logout", methods=["GET"])
