@@ -38,7 +38,7 @@ def landing():
     return render_template("login.html")
 
 @app.route("/login", methods=["POST"])
-@limiter.limit("2 per minute", error_message="You have tried to log in too many times. Please wait a moment and try again.")        # Brute force protection
+@limiter.limit("10 per minute", error_message="You have tried to log in too many times. Please wait a moment and try again.")        # Brute force protection
 def login():
     cursor, db = db_connect()
     
