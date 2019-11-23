@@ -12,11 +12,11 @@ import sys                                                                      
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(128)                                              # CSRF protection
+session_id = None
 
 limiter = Limiter(                                                                      # Brute force protection
     app,
-    key_func=get_remote_address,
-    default_limits=["2 per minute", "1 per second"],
+    key_func=get_remote_address
 )
 
 def db_connect():    
@@ -31,15 +31,17 @@ def db_connect():
     cursor = db.cursor()
     return cursor, db
 
-# LOGIN
-
 @app.route("/", methods=["GET"])
 def landing():
     return render_template("login.html")
 
+# LOGIN
+
 @app.route("/login", methods=["POST"])
 @limiter.limit("10 per minute", error_message="You have tried to log in too many times. Please wait a moment and try again.")        # Brute force protection
 def login():
+    global session_id
+
     cursor, db = db_connect()
     
     username = request.form['username'] 
@@ -71,6 +73,10 @@ def login():
         cursor.execute(sql_statement, str(username))
         session['display_name'] = cursor.fetchone()[0]
 
+        session['logged_in'] = True
+        session_id = os.urandom(128)  
+        session['session_id'] = session_id
+
         cursor.close()
         db.close()
         return redirect(url_for('home'))
@@ -85,14 +91,29 @@ def incorrect():
 
 @app.route("/logout", methods=["GET"])
 def logout():
+    # if session.get('logged_in') is None or session.get('session_id') != session_id:
+    #     return redirect(url_for('landing'))
+
+    session.pop('session_id', None)
     session.pop('user_id', None)
     session.pop('display_name', None)
+    session.pop('logged_in', None)
+    
     return redirect(url_for('landing'))
 
 # HOMEPAGE
 
 @app.route("/home", methods=["GET", "POST"])
 def home():
+    # print("Logged in?", session.get('logged_in'), file=sys.stderr)
+    # print("Received session id:", session.get('session_id'), file=sys.stderr)
+    # print("Session id:", session_id, file=sys.stderr)
+    
+    if session.get('logged_in') is None:
+        return redirect(url_for('landing'))
+    elif session.get('session_id') != session_id:
+        return redirect(url_for('logout'))
+    
     cursor, db = db_connect()
 
     # Upload by link
@@ -163,6 +184,11 @@ def home():
 
 @app.route("/getvideos", methods=["POST"])
 def own_videos():
+    if session.get('logged_in') is None:
+        return redirect(url_for('landing'))
+    elif session.get('session_id') != session_id:
+        return redirect(url_for('logout'))
+
     cursor, db = db_connect()
     
     user_id = session['user_id']
@@ -182,6 +208,11 @@ def own_videos():
 
 @app.route("/getothervids", methods=["POST"])
 def other_videos():
+    if session.get('logged_in') is None:
+        return redirect(url_for('landing'))
+    elif session.get('session_id') != session_id:
+        return redirect(url_for('logout'))
+
     cursor, db = db_connect()
     
     user_id = session['user_id']
@@ -201,6 +232,11 @@ def other_videos():
 
 @app.route("/delete/<video_id>", methods=["GET"])
 def delete_video(video_id):
+    if session.get('logged_in') is None:
+        return redirect(url_for('landing'))
+    elif session.get('session_id') != session_id:
+        return redirect(url_for('logout'))
+
     cursor, db = db_connect()
 
     sql_statement = "SELECT user_id FROM Video WHERE video_id=%s;"                       # SQL Injection protection
@@ -230,6 +266,11 @@ def delete_video(video_id):
 
 @app.route('/video/<title>', methods=["GET"])
 def get_video(title):
+    if session.get('logged_in') is None:
+        return redirect(url_for('landing'))
+    elif session.get('session_id') != session_id:
+        return redirect(url_for('logout'))
+
     return send_from_directory('/video', title)
 
 if __name__ == "__main__":
