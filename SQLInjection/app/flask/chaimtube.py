@@ -28,7 +28,7 @@ def login():
     #sql_statement = "SELECT Salt from Account WHERE Username=%s"    # SQL Injection (classic) protection
     #ursor.execute(sql_statement, str(username))
 
-    cursor.execute("SELECT Salt from Account WHERE Username="+"'"+str(username)+"'")
+    cursor.execute("SELECT Username, PasswordHash from Account WHERE Username="+"'"+str(username)+"'")
     salt = cursor.fetchone()
 
     if salt is None:
