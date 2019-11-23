@@ -159,7 +159,10 @@ def home():
             video_name = video.filename
 
             # Store video at location
-            video.save("video/" + video_name)
+            try:
+                video.save("video/" + video_name)
+            except IsADirectoryError:
+                return "Please submit a video to upload."
 
             # Store metadata in database
             sql_statement = "INSERT INTO Video(user_id, Username, FileName) VALUES (%s, %s, %s);"      # SQL Injection protection

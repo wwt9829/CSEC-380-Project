@@ -9,7 +9,7 @@ def test_act4():
     session = requests.session()
     login = session.post("http://localhost:5000/login", {"username": "test@user.com", "password": "password"}).text
 
-    with open('/home/travis/build/wwt9829/CSEC-380-Project/tests/small.mp4', 'rb') as file:
+    with open('small.mp4', 'rb') as file:
         upload_file = session.post("http://localhost:5000/home", data=file).text    # Unsure if route is correct
     if "small.mp4" in upload_file:
         verify_upload = True
