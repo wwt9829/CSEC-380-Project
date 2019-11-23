@@ -1,7 +1,7 @@
 import requests
 
 # Activity 4 test. Code signs in as a user, uploads a video, views the video, then deletes the video.
-def main():
+def test_act4():
     verify_upload = False
     verify_view = False
     verify_delete = False
@@ -29,4 +29,4 @@ def main():
         and "\n" and "Delete successful? --> " and verify_delete and "\n"
 
 if __name__ == '__main__':
-    main()
+    test_act4()
