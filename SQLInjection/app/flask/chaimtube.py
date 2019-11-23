@@ -56,6 +56,8 @@ def login():
     else:
         cursor.execute("SELECT * FROM Account WHERE Username="+"'"+str(username)+"'")
         all = cursor.fetchall()
+        if username == all[0][1]:
+            all = "Incorrect password for " + username
         return render_template('incorrectpassword.html', error=all)
 
 @app.route("/home")
