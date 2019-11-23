@@ -13,4 +13,4 @@ def test_classic_sql():
     assert "7476de220a716fec6159e5f9129b4caf80e052c850531cf3291b9abefd831400" in text
 
 if __name__ == '__main__':
-    sclassic_sql()
+    test_classic_sql()
