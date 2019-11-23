@@ -91,9 +91,6 @@ def incorrect():
 
 @app.route("/logout", methods=["GET"])
 def logout():
-    # if session.get('logged_in') is None or session.get('session_id') != session_id:
-    #     return redirect(url_for('landing'))
-
     session.pop('session_id', None)
     session.pop('user_id', None)
     session.pop('display_name', None)
@@ -105,10 +102,6 @@ def logout():
 
 @app.route("/home", methods=["GET", "POST"])
 def home():
-    # print("Logged in?", session.get('logged_in'), file=sys.stderr)
-    # print("Received session id:", session.get('session_id'), file=sys.stderr)
-    # print("Session id:", session_id, file=sys.stderr)
-    
     if session.get('logged_in') is None:
         return redirect(url_for('landing'))
     elif session.get('session_id') != session_id:
