@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 
 
-def classic_sql():
+def test_classic_sql():
     """
     Classic Sql injection Test
     """
