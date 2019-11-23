@@ -14,8 +14,12 @@ CREATE TABLE IF NOT EXISTS `Video` (
       `user_id` int(11) NOT NULL,
       `Username` varchar(32) NOT NULL,
       `FileName` varchar(32) NOT NULL,
-      PRIMARY KEY (`video_id`)
-    );
+      PRIMARY KEY (`video_id`),
+      CONSTRAINT `fk_video_account`
+          FOREIGN KEY (user_id) REFERENCES Account (user_id)
+          ON DELETE CASCADE
+          ON UPDATE RESTRICT
+    ) ENGINE = InnoDB;
 
 INSERT INTO `Account` (`user_id`, `Username`, `DisplayName`, `Salt`, `PasswordHash`) VALUES
 (1, 'test@user.com', 'Test Test', '38DcRn49QeTx8aJl', '7b063fc3b1fe75458cef876595524681fbaacb4160076ffe29e46b8813313936'),
