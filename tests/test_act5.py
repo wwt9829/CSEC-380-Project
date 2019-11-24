@@ -11,7 +11,7 @@ def test_classic_sql():
     
     body = soup.find('p').text
 
-    assert "7476de220a716fec6159e5f9129b4caf80e052c850531cf3291b9abefd831400" in body
+    assert "7476de220a716fec6159e5f9129b4caf80e052c850531cf3291b9abefd83140" in body
 
 if __name__ == '__main__':
     test_classic_sql()

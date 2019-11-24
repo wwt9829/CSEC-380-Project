@@ -3,6 +3,7 @@ import pytest
 
 # Activity 4 test. Code signs in as a user, uploads a video, views the video, then deletes the video.
 def test_act4():
+
     session = requests.session()
     login = session.post("http://localhost:5000/login", {"username": "test@user.com", "password": "password"}).text
 
