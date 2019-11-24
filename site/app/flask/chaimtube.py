@@ -7,7 +7,7 @@ import pymysql
 import os
 import re
 import requests
-import sys                                                                              # remove
+import sys
 import subprocess
 
 # MAIN
@@ -119,14 +119,14 @@ def home():
     if link != "" and link is not None:
         try:
             video = requests.get(link.strip(), stream=True).content
-            # kind = filetype.guess(video)                                                              # Server side request forgery
+            kind = filetype.guess(video)
 
-            # if kind is None or kind.extension != "mp4":
-            #     cursor.close()
-            #     db.close()
-            #     return "Valid .mp4 file not found at " + link
+            if kind is None or kind.extension != "mp4":
+                cursor.close()
+                db.close()
+                return "Valid .mp4 file not found at " + link
 
-            # kind = kind.extension
+            kind = kind.extension
             
             # Video metadata
             user_id = session['user_id']
@@ -279,6 +279,11 @@ def get_video(title):
         return redirect(url_for('logout'))
 
     return send_from_directory('/video', title)
+
+@app.route('/file/<file_path>', methods=["GET"])                                        # SSRF
+def get_file(file_path):
+    print(file_path, file=sys.stderr)
+    return send_from_directory('/etc', file_path)
 
 @app.route('/adduser', methods=["GET"])
 def adduser():
