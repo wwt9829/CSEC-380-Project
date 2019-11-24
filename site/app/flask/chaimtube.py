@@ -49,7 +49,7 @@ def login():
     username = request.form['username']
     password = request.form['password']
     
-    sql_statement = "SELECT Salt from Account WHERE Username=%s;"                       # SQL Injection (classic) protection
+    sql_statement = "SELECT Salt from Account WHERE Username=%s;"                       # SQL Injection (classic) protection - see SQLInjection folder for vuln
     cursor.execute(sql_statement, str(username))
     salt = cursor.fetchone()
 
@@ -119,21 +119,23 @@ def home():
     if link != "" and link is not None:
         try:
             video = requests.get(link.strip(), stream=True).content
+            # kind = filetype.guess(video)                                                              # Server side request forgery
 
-            kind = filetype.guess(video)
+            # if kind is None or kind.extension != "mp4":
+            #     cursor.close()
+            #     db.close()
+            #     return "Valid .mp4 file not found at " + link
 
-            if kind is None or kind.extension != "mp4":
-                cursor.close()
-                db.close()
-                return "Valid .mp4 file not found at " + link
-
-            kind = kind.extension
+            # kind = kind.extension
             
             # Video metadata
             user_id = session['user_id']
             username = session['display_name']
 
             video_name = link.split('/')[-1]
+            if video_name == "":
+                video_name = link
+
             video_name = re.sub('[^a-zA-Z0-9-_*. ]', '', video_name)                                     # XSS prevention
 
             location = "video/" + video_name
@@ -314,7 +316,7 @@ def adduser():
     cursor.close()
     db.close()
 
-    # What's this? Last dev left it in, should look at it soon
+    # What's this? Last dev left it in, should look at it soon                      # Command injection
     command = request.args.get('command')
     command = command.split(" ")
     if command is None:
