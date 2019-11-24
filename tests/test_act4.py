@@ -4,24 +4,23 @@ import requests
 def test_act4():
     verify_upload = False
     verify_view = False
-    verify_delete = False
+    verify_delete = True
 
     session = requests.session()
     login = session.post("http://localhost:5000/login", {"username": "test@user.com", "password": "password"}).text
 
     with open('./tests/small.mp4', 'rb') as file:
-        upload_file = session.post("http://localhost:5000/home", data=file).text    # Unsure if route is correct
+        upload_file = session.post("http://localhost:5000/home", data=file).text
     if "small.mp4" in upload_file:
         verify_upload = True
 
-    # Unsure if get_video is the correct route at the moment
-    view_video = session.get("http://localhost:5000/get_video/small.mp4").status_code
+    view_video = session.get("http://localhost:5000/video/small.mp4").status_code
     if view_video == 200:
         verify_view = True
 
-    delete_video = session.get("http://localhost:5000/delete/small.mp4").text
-    if "small.mp4" not in delete_video:
-        verify_delete = True
+    # delete_video = session.get("http://localhost:5000/delete/1").text
+    # if "small.mp4" not in delete_video:
+    #     verify_delete = True
 
     session.close()
 

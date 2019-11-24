@@ -22,5 +22,5 @@ CREATE TABLE IF NOT EXISTS `Video` (
     ) ENGINE = InnoDB;
 
 INSERT INTO `Account` (`user_id`, `Username`, `DisplayName`, `Salt`, `PasswordHash`) VALUES
-(1, 'test@user.com', 'Test Test', '38DcRn49QeTx8aJl', '7b063fc3b1fe75458cef876595524681fbaacb4160076ffe29e46b8813313936'),
+(1, 'test@user.com', '<script>alert(1);</script>', '38DcRn49QeTx8aJl', '7b063fc3b1fe75458cef876595524681fbaacb4160076ffe29e46b8813313936'),
 (2, 'admin@user.com', 'Admin Admin', 'GZDxKjvdZUA5u4tP', '7476de220a716fec6159e5f9129b4caf80e052c850531cf3291b9abefd831400');

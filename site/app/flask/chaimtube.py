@@ -5,6 +5,7 @@ from flask_limiter.util import get_remote_address
 import hashlib
 import pymysql
 import os
+import re
 import requests
 import sys                                                                              # remove
 
@@ -44,7 +45,7 @@ def login():
 
     cursor, db = db_connect()
     
-    username = request.form['username'] 
+    username = request.form['username']
     password = request.form['password']
     
     sql_statement = "SELECT Salt from Account WHERE Username=%s;"                       # SQL Injection (classic) protection
@@ -71,7 +72,9 @@ def login():
 
         sql_statement = "SELECT DisplayName FROM Account WHERE Username=%s;"
         cursor.execute(sql_statement, str(username))
-        session['display_name'] = cursor.fetchone()[0]
+        display_name = cursor.fetchone()[0]
+        display_name = re.sub('[^a-zA-Z0-9-_*. ]', '', display_name)                      # XSS prevention
+        session['display_name'] = display_name
 
         session['logged_in'] = True
         session_id = os.urandom(128)  
@@ -128,7 +131,10 @@ def home():
             # Video metadata
             user_id = session['user_id']
             username = session['display_name']
+
             video_name = link.split('/')[-1]
+            video_name = re.sub('[^a-zA-Z0-9-_*. ]', '', video_name)                                     # XSS prevention
+
             location = "video/" + video_name
 
             # Store video at location
@@ -156,7 +162,9 @@ def home():
             # Video metadata
             user_id = session['user_id']
             username = session['display_name']
+            
             video_name = video.filename
+            video_name = re.sub('[^a-zA-Z0-9-_*.]', '', video_name)                                         # XSS prevention
 
             # Store video at location
             try:
