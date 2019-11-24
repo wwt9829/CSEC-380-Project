@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import time
-
+import sys
 
 def test_classic_sql():
     time.sleep(10)          # Give Docker time to start up
@@ -19,7 +19,6 @@ def test_classic_sql():
 
             assert "7476de220a716fec6159e5f9129b4caf80e052c850531cf3291b9abefd83140" in body
         except Exception:
-            print("Connection timed out... retry #", i)
             time.sleep(3)
             i += 1
 
