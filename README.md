@@ -23,6 +23,6 @@ A vulnerable video sharing platform for RIT's Principles of Web Application Secu
 * [Activity 7 Answers](https://github.com/wwt9829/CSEC-380-Project/wiki/Activity-7-Questions)
 
 ## Vulnerability Videos
-* Activity 5 SQL Injection
-* Activity 6 Server Side Request Forgery
-* Activity 7 Command Injection
+* [Activity 5 SQL Injection](https://github.com/wwt9829/CSEC-380-Project/wiki/Activity-5-Videos)
+* [Activity 6 Server Side Request Forgery](https://github.com/wwt9829/CSEC-380-Project/wiki/Activity-6-Videos)
+* [Activity 7 Command Injection](https://github.com/wwt9829/CSEC-380-Project/wiki/Activity-7-Videos)
