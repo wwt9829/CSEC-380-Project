@@ -10,7 +10,7 @@ check = 1
 while check == 1:
     try:
         check = 0
-        db = pymysql.connect('chaimtube_db', 'root', 'changeme', 'chaimtube')
+        db = pymysql.connect('chaimtube_db_sqli', 'root', 'changeme', 'chaimtube')
     except pymysql.err.OperationalError:
         check = 1
 

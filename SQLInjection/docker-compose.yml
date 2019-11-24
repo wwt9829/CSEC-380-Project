@@ -2,22 +2,22 @@ version: '3'
 
 services:
   db:
-    container_name: chaimtube_db
+    container_name: chaimtube_db_sqli
     build: db/.
     env_file:
       - db/db.env
     networks:
-      - project
+      - sqli
   
   app:
-    container_name: chaimtube_app
+    container_name: chaimtube_app_sqli
     build: app/.
     depends_on:
       - db
     ports:
-      - 5000:5000
+      - 5001:5000
     networks:
-      - project
+      - sqli
 
 networks:
-  project:
+  sqli:

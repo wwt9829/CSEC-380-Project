@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
-
+import time
 
 # Activity 3 tests
 def test_successful_login():
@@ -22,6 +22,7 @@ def test_invalid_username():
 
 
 if __name__ == '__main__':
+    time.sleep(15)          # Give Docker time to start up
     test_successful_login()
     test_invalid_password()
     test_invalid_username()
