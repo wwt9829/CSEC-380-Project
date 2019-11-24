@@ -1,5 +1,6 @@
 # ChaimTube (CSEC-380 Semester Project)
 [![Build Status](https://travis-ci.org/wwt9829/CSEC-380-Project.svg?branch=master)](https://travis-ci.org/wwt9829/CSEC-380-Project)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f7c99b34a214492dbf4b4f02fa57aa15)](https://www.codacy.com/manual/wwt9829/CSEC-380-Project?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=wwt9829/CSEC-380-Project&amp;utm_campaign=Badge_Grade)
 
 A vulnerable video sharing platform for RIT's Principles of Web Application Security (CSEC-380) course, aptly named **ChaimTube**
 
