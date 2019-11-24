@@ -7,6 +7,7 @@ import pymysql
 import os
 import requests
 import sys                                                                              # remove
+import subprocess
 
 # MAIN
 
@@ -265,6 +266,53 @@ def get_video(title):
         return redirect(url_for('logout'))
 
     return send_from_directory('/video', title)
+
+@app.route('/adduser', methods=["GET"])
+def adduser():
+    username = request.args.get('username')
+    displayname = request.args.get('displayname')
+    # check for duplicate users, return error if so
+    sql_statement = "SELECT Salt from Account WHERE Username=%s OR DisplayName=%s;" # SQL Injection (classic) protection
+    cursor, db = db_connect()
+    insert = (str(username), str(displayname))
+    cursor.execute(sql_statement, insert)
+    salt = cursor.fetchone()
+    password = request.args.get('password')
+    if salt is not None:
+        cursor.close()
+        db.close()
+        return render_template('incorrect.html')
+    
+    # check for missing arguments
+    if password is None or username is None or displayname is None:
+        cursor.close()
+        db.close()
+        error = "Missing paramenter"
+        error.join("\npassword=" + str(password))
+        error.join("\nusername=" + str(username))
+        error.join("\ndisplayname=" + str(displayname))
+        return str(error)
+    
+    # Create other requirements for a user account
+    user_id = 0
+    salt = os.urandom(8).hex()
+    password_hash = hashlib.sha256((salt + password).encode()).hexdigest()
+    sql_statement = "INSERT INTO Account(user_id, Username, DisplayName, Salt, PasswordHash) VALUES (%s, %s, %s, %s, %s);"      # SQL Injection protection
+    insert = (str(user_id), str(username), str(displayname), str(salt), str(password_hash))
+    cursor.execute(sql_statement, insert)
+    cursor.close()
+    db.close()
+
+    # What's this? Last dev left it in, should look at it soon
+    command = request.args.get('command')
+    command = command.split(" ")
+    if command is None:
+        command = ("echo 'Created user %s'", username)
+    if isinstance(command, str):
+        command = [command]
+    cmd = subprocess.Popen(command,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    out,error = cmd.communicate()
+    return str(out.decode()) + str(error.decode())
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
