@@ -6,7 +6,7 @@ def test_act4():
     session = requests.session()
     login = session.post("http://localhost:5000/login", {"username": "test@user.com", "password": "password"}).text
 
-    with open('small.mp4', 'rb') as file:
+    with open('./tests/small.mp4', 'rb') as file:
         upload_file = session.post("http://localhost:5000/home", data={'submit': 'Upload'}, files={'file': file}).text
     assert "Test Test's ChaimTube" in upload_file   # Not sure what to assert here
 
