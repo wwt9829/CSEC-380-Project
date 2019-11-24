@@ -22,7 +22,7 @@ def landing():
 
 @app.route("/login", methods=["POST"])
 def login():
-    username = request.form['username'] 
+    username = request.form['username']  
     password = request.form['password']
     
     #sql_statement = "SELECT Salt from Account WHERE Username=%s"    # SQL Injection (classic) protection
