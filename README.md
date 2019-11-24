@@ -3,7 +3,7 @@
 
 A vulnerable video sharing platform for RIT's Principles of Web Application Security (CSEC-380) course, aptly named **ChaimTube**
 
-**(Planned) Features:**
+**Features:**
 * User accounts and profiles
 * Upload videos by file or URL
 * Watch others' videos
@@ -21,3 +21,8 @@ A vulnerable video sharing platform for RIT's Principles of Web Application Secu
 * [Activity 5 Answers](https://github.com/wwt9829/CSEC-380-Project/wiki/Activity-5-Questions)
 * [Activity 6 Answers](https://github.com/wwt9829/CSEC-380-Project/wiki/Activity-6-Questions)
 * [Activity 7 Answers](https://github.com/wwt9829/CSEC-380-Project/wiki/Activity-7-Questions)
+
+## Vulnerability Videos
+* Activity 5 SQL Injection
+* Activity 6 Server Side Request Forgery
+* Activity 7 Command Injection
