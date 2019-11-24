@@ -1,8 +1,11 @@
 from bs4 import BeautifulSoup
 import requests
+import time
 
 
 def test_classic_sql():
+    time.sleep(10)          # Give Docker time to start up
+
     """
     Classic Sql injection Test
     """
