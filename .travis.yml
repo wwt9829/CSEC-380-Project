@@ -8,6 +8,7 @@ install:
 
 before_install:
   - docker-compose -f site/docker-compose.yml up --build -d
+  - docker-compose -f SQLInjection/docker-compose.yml up --build -d
 
 script:
   - pytest
