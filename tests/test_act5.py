@@ -14,7 +14,7 @@ def test_classic_sql():
         string += str(x)
     text = string
     print(text)
-    assert "Error" in text
+    assert "GZDxKjvdZUA5u4tP" in text
 
 if __name__ == '__main__':
     test_classic_sql()
