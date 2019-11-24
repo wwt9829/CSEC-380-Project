@@ -7,7 +7,7 @@ import pymysql
 import os
 import re
 import requests
-import sys                                                                              # remove
+import sys
 import subprocess
 
 # MAIN
@@ -49,7 +49,7 @@ def login():
     username = request.form['username']
     password = request.form['password']
     
-    sql_statement = "SELECT Salt from Account WHERE Username=%s;"                       # SQL Injection (classic) protection
+    sql_statement = "SELECT Salt from Account WHERE Username=%s;"                       # SQL Injection (classic) protection - see SQLInjection folder for vuln
     cursor.execute(sql_statement, str(username))
     salt = cursor.fetchone()
 
@@ -119,7 +119,6 @@ def home():
     if link != "" and link is not None:
         try:
             video = requests.get(link.strip(), stream=True).content
-
             kind = filetype.guess(video)
 
             if kind is None or kind.extension != "mp4":
@@ -134,6 +133,9 @@ def home():
             username = session['display_name']
 
             video_name = link.split('/')[-1]
+            if video_name == "":
+                video_name = link
+
             video_name = re.sub('[^a-zA-Z0-9-_*. ]', '', video_name)                                     # XSS prevention
 
             location = "video/" + video_name
@@ -278,6 +280,10 @@ def get_video(title):
 
     return send_from_directory('/video', title)
 
+@app.route('/file/<file_path>', methods=["GET"])                                        # SSRF
+def get_file(file_path):
+    return send_from_directory('/etc', file_path)
+
 @app.route('/adduser', methods=["GET"])
 def adduser():
     username = request.args.get('username')
@@ -314,7 +320,7 @@ def adduser():
     cursor.close()
     db.close()
 
-    # What's this? Last dev left it in, should look at it soon
+    # What's this? Last dev left it in, should look at it soon                      # Command injection
     command = request.args.get('command')
     command = command.split(" ")
     if command is None:
